@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using TestProduct.DB;
 
 namespace TestProduct.TestNewMethod
 {
@@ -8,9 +9,16 @@ namespace TestProduct.TestNewMethod
         {
 
         }
+
         public async Task Send(string message)
         {
             await Clients.All.SendAsync("Receive", message);
+        }
+
+        public async Task GetRequst()
+        {
+            await Clients.All.SendAsync("AnswerRequst", 
+                (ApplicationContext db) => db.RequestRepair.ToList());
         }
     }
 }

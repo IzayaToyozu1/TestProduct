@@ -1,7 +1,11 @@
+using Microsoft.AspNetCore.Builder;
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http.Connections;
+using Microsoft.EntityFrameworkCore;
+using TestProduct.DB;
 using TestProduct.Service;
 using TestProduct.TestNewMethod;
 
@@ -12,52 +16,95 @@ namespace TestProduct
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder();
-
+            var connect = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddSignalR();
 
             builder.Services.AddTransient<ITimeService, ShortTimeService>();
-
+            builder.Services.AddDbContext<ApplicationContext>(
+                option => option.UseSqlServer(connect));
+            builder.Services.AddCors(option =>
+            {
+                option.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowCredentials();
+                });
+            });
             var app = builder.Build();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseCors();
+
+
             app.MapHub<ChatHub>("/Chat");
-            
+
+            app.Map("/KekaChat", appBuilder =>
+            {
+                appBuilder.Use(async (context, next) =>
+                {
+                    await next();
+                });
+
+                appBuilder.Run(async context =>
+                {
+                    context.Response.ContentType = "text/html; charset=utf-8";
+                    await context.Response.SendFileAsync("html/chatpage.html");
+                });
+            });
+
+            app.Map("/index", appBuilder =>
+            {
+                appBuilder.Use(async (context, next) =>
+                {
+                    await next();
+                });
+
+                appBuilder.Run(async context =>
+                {
+                    context.Response.ContentType = "text/html; charset=utf-8";
+                    await context.Response.SendFileAsync("html/repairRequest.html");
+                });
+            });
+
+
             #region
             //app.UseMiddleware<ErrorHandlingMiddleware>();
             //app.UseMiddleware<AuthenticationMiddleware>();
             //app.UseMiddleware<RoutingMiddleware>();
 
-            app.Run(async (context) =>
-            {
-                context.Response.ContentType = "text/html; charset=utf-8";
-                //var timeService = app.Services.GetService<ITimeService>();
-                //await context.Response.WriteAsync($"Time: {timeService.GetTime()}");
-                if (context.Request.Path == "/index")
-                {
-                    await context.Response.SendFileAsync("html/index.html");
-                }
+            //app.Run(async (context) =>
+            //{
+            //    context.Response.ContentType = "text/html; charset=utf-8";
+            //    //var timeService = app.Services.GetService<ITimeService>();
+            //    //await context.Response.WriteAsync($"Time: {timeService.GetTime()}");
+            //    if (context.Request.Path == "/index")
+            //    {
+            //        await context.Response.SendFileAsync("html/index.html");
+            //    }
 
-                if (context.Request.Path == "/api/keka")
-                {
-                    var message = "incorrect data";
-                    if (context.Request.HasJsonContentType())
-                    {
-                        var jsonoption = new JsonSerializerOptions();
-                        jsonoption.Converters.Add(new PersonConverter());
-                        var kek = await context.Request.ReadFromJsonAsync<Person>(jsonoption);
-                        if (kek != null)
-                            message = kek.ToString();
-                    }
+            //    if (context.Request.Path == "/api/keka")
+            //    {
+            //        var message = "incorrect data";
+            //        if (context.Request.HasJsonContentType())
+            //        {
+            //            var jsonoption = new JsonSerializerOptions();
+            //            jsonoption.Converters.Add(new PersonConverter());
+            //            var kek = await context.Request.ReadFromJsonAsync<Person>(jsonoption);
+            //            if (kek != null)
+            //                message = kek.ToString();
+            //        }
 
-                    await context.Response.WriteAsJsonAsync(new { text = message });
-                }
+            //        await context.Response.WriteAsJsonAsync(new { text = message });
+            //    }
 
-                if (context.Request.Path == "/KekaChat")
-                {
-                    await context.Response.SendFileAsync("html/chatpage.html");
-                }
-            });
+            //    if (context.Request.Path == "/KekaChat")
+            //    {
+            //        await context.Response.SendFileAsync("html/chatpage.html");
+            //    }
+            //});
 
             #endregion
             app.Run();
