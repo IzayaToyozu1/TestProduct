@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using System;
+using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.EntityFrameworkCore;
 using TestProduct.DB;
-using TestProduct.Service;
+using TestProduct.Model;
 using TestProduct.TestNewMethod;
 
 namespace TestProduct
@@ -18,8 +19,8 @@ namespace TestProduct
             var builder = WebApplication.CreateBuilder();
             var connect = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddSignalR();
+            
 
-            builder.Services.AddTransient<ITimeService, ShortTimeService>();
             builder.Services.AddDbContext<ApplicationContext>(
                 option => option.UseSqlServer(connect));
             builder.Services.AddCors(option =>
@@ -32,6 +33,7 @@ namespace TestProduct
                         .AllowCredentials();
                 });
             });
+
             var app = builder.Build();
 
             app.UseDefaultFiles();
@@ -67,6 +69,27 @@ namespace TestProduct
                     context.Response.ContentType = "text/html; charset=utf-8";
                     await context.Response.SendFileAsync("html/repairRequest.html");
                 });
+            });
+
+            app.MapGet("/api/GetRequestAll",(string start, string end, 
+                int typeService, bool withAccess) =>
+            {
+                ApplicationRepairRequestContext context = 
+                    new ApplicationRepairRequestContext
+                        ("Server=192.168.5.85\\K21;" +
+                         "Database=dbase1;" +
+                         "User Id=SuperUser;" +
+                         "Password=fate;" +
+                          "MultipleActiveResultSets = True; " +
+                            "TrustServerCertificate = True"
+                         );
+                DbParametrProc paramProc = new DbParametrProc(
+                    new[] { "@start", "@end", "@typeService", "@WithAccess" },
+                    new object[] { DateTime.Parse(start), DateTime.Parse(end), typeService, withAccess },
+                    new[] { DbType.DateTime, DbType.DateTime, DbType.Int32, DbType.Boolean });
+                var repeirRequsts = context.GetItems<RequestRepair>(paramProc, "Repair.GetRepairRequests");
+                context.Dispose();
+                return Results.Json(repeirRequsts);
             });
 
 

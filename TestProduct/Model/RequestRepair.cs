@@ -5,7 +5,7 @@ namespace TestProduct.Model
     [Table("j_RequestRepair", Schema = "Repair")]
     public class RequestRepair
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public int? Number { get; set; }
         public DateTime DateSubmission { get; set; }
         public int id_Submission { get; set; }
@@ -22,29 +22,36 @@ namespace TestProduct.Model
         public DateTime? DateConfirm { get; set; }
         public string? ip_address { get; set; }
         public int? id_Responsible { get; set; }
+        public string StartName { get; set; }
+        public string EndName { get; set; }
+        public string ConfirmName { get; set; }
+        public string FIOsub { get; set; }
+        public string cName { get; set; }
         public string? name_comp { get; set; }
-        public int? id_Object { get; set; }
+        public string resName { get; set; }
+        public string strComment { get; set; }
+        public string nameStatus { get; set; }
+        public DateTime countHour { get; set; }
+        public DateTime countHourX { get; set; }
+        public DateTime countHourY { get; set; }
+        public string listIdObject { get; set; }
+        public string nameObject { get; set; }
+        public string nameMark { get; set; }
+        public int? R { get; set; }
+        public int? G { get; set; }
+        public int? B { get; set; }
+        public int IdMark { get; set; }
         public int TypeService { get; set; }
         public int? id_Device { get; set; }
-        public bool isGK { get; set; }
-        public int? id_StageRequests { get; set; }
-        public int id_Priority { get; set; }
-
-        [ForeignKey("id_Start")]
-        public User User1 { get; set; }
-
-        [ForeignKey("id_Confirm")]
-        public User User2 { get; set; }
-
-        [ForeignKey("id_End")]
-        public User User3 { get; set; }
-
-        [ForeignKey("id_Submission")]
-        public User User4 { get; set; }
-
-        public override string ToString()
-        {
-            return $"Заявка под номером {Number}; User1 {User1}; User2 {User2}; User3 {User3}; User4 {User4}";
-        }
+        public int CountDoc { get; set; }
+        public int DevId { get; set; }
+        public string Dev { get; set; }
+        public string TypeDev { get; set; }
+        public int TypeDevId { get; set; }
+        public bool IsGK { get; set; }
+        public int IdStage { get; set; }
+        public string StageName { get; set; }
+        public int IdPriority { get; set; }
+        public string PriorityName { get; set; }
     }
 }
