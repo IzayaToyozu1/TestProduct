@@ -31,9 +31,9 @@ namespace TestProduct.Model
         public string resName { get; set; }
         public string strComment { get; set; }
         public string nameStatus { get; set; }
-        public DateTime countHour { get; set; }
-        public DateTime countHourX { get; set; }
-        public DateTime countHourY { get; set; }
+        public string? countHour { get; set; }
+        public int countHourX { get; set; }
+        public int countHourY { get; set; }
         public string listIdObject { get; set; }
         public string nameObject { get; set; }
         public string nameMark { get; set; }
@@ -42,16 +42,15 @@ namespace TestProduct.Model
         public int? B { get; set; }
         public int IdMark { get; set; }
         public int TypeService { get; set; }
-        public int? id_Device { get; set; }
         public int CountDoc { get; set; }
-        public int DevId { get; set; }
-        public string Dev { get; set; }
-        public string TypeDev { get; set; }
-        public int TypeDevId { get; set; }
+        public int? DevId { get; set; }
+        public string? Dev { get; set; }
+        public string? TypeDev { get; set; }
+        public int? TypeDevId { get; set; }
         public bool IsGK { get; set; }
-        public int IdStage { get; set; }
-        public string StageName { get; set; }
+        public int? IdStage { get; set; }
+        public string? StageName { get; set; }
         public int IdPriority { get; set; }
-        public string PriorityName { get; set; }
+        public string? PriorityName { get; set; }
     }
 }

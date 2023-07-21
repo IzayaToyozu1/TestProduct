@@ -14,11 +14,5 @@ namespace TestProduct.TestNewMethod
         {
             await Clients.All.SendAsync("Receive", message);
         }
-
-        public async Task GetRequst()
-        {
-            await Clients.All.SendAsync("AnswerRequst", 
-                (ApplicationContext db) => db.RequestRepair.ToList());
-        }
     }
 }

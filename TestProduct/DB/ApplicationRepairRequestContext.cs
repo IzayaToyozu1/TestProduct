@@ -12,8 +12,16 @@ namespace TestProduct.DB
         public ApplicationRepairRequestContext(string connection)
         {
             _sqlConnection = new SqlConnection(connection);
-            _sqlConnection.OpenAsync();
+            _sqlConnection.Open();
         }
+
+        public void ExecuteMethod(DbParametrProc proc, string nameProc )
+        {
+            SqlCommand command = new SqlCommand(nameProc, _sqlConnection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddRange(proc.SqlNameParametr);
+        }
+
 
         public T[] GetItems<T>(DbParametrProc proc, string? nameProc = null) where T : class
         {
@@ -28,19 +36,17 @@ namespace TestProduct.DB
             command.Parameters.AddRange(proc.SqlNameParametr);
             var reader = command.ExecuteReader();
 
-            for (int i = 0; i < reader.GetColumnSchema().Count; i++)
-            {
-                
-            }
-
             while (reader.Read())
             {
                 object obj = Activator.CreateInstance(typeItemT);
                 PropertyInfo propInfo;
                 for (int i = 0; i < propItemT.Length; i++)
                 {
-                    propInfo = typeItemT.GetProperty(propItemT[0].Name);
-                    propInfo.SetValue(obj, reader.GetValue(i));
+                    var value = reader.GetValue(i);
+                    propInfo = typeItemT.GetProperty(propItemT[i].Name);
+                    if (value is DBNull)
+                        continue;
+                    propInfo.SetValue(obj, value);
                 }
 
                 result.Add((T)obj);
