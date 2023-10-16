@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using TestProduct.DB;
 
 namespace TestProduct.TestNewMethod
 {

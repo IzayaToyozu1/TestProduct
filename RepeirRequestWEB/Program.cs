@@ -7,8 +7,8 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.EntityFrameworkCore;
 using TestProduct.DB;
-using TestProduct.Model;
 using TestProduct.TestNewMethod;
+using RepeirRequestBL.Model;
 
 namespace TestProduct
 {
@@ -19,6 +19,7 @@ namespace TestProduct
             var builder = WebApplication.CreateBuilder();
             var connect = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddSignalR();
+
             
             builder.Services.AddCors(option =>
             {
@@ -54,7 +55,7 @@ namespace TestProduct
                 });
             });
 
-            app.Map("/index", appBuilder =>
+            app.Map("/htmlpage", appBuilder =>
             {
                 appBuilder.Use(async (context, next) =>
                 {
@@ -64,7 +65,7 @@ namespace TestProduct
                 appBuilder.Run(async context =>
                 {
                     context.Response.ContentType = "text/html; charset=utf-8";
-                    await context.Response.SendFileAsync("html/repairRequest.html");
+                    await context.Response.SendFileAsync("html/htmlpage.html");
                 });
             });
 

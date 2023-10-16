@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TestProduct.Model
+namespace RepeirRequestBL.Model
 {
     [Table("j_RequestRepair", Schema = "Repair")]
     public class RequestRepair

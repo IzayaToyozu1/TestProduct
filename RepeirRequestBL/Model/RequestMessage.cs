@@ -1,4 +1,4 @@
-﻿namespace TestProduct.Model
+﻿namespace RepeirRequestBL.Model
 {
     public class RequestMessage
     {

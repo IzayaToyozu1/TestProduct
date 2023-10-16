@@ -1,4 +1,5 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
 using Microsoft.Data.SqlClient;
@@ -28,8 +29,9 @@ namespace TestProduct.DB
             List<T> result = new List<T>();
             Type typeItemT = typeof(T);
             var propItemT = typeItemT.GetProperties();
+            var attribute = typeItemT.GetCustomAttribute<TableAttribute>();
 
-            if(nameProc == null)
+            if(nameProc == null) 
                 nameProc = $"Repair.Get{typeItemT.Name}s";
             SqlCommand command = new SqlCommand(nameProc, _sqlConnection);
             command.CommandType = CommandType.StoredProcedure;
@@ -60,5 +62,10 @@ namespace TestProduct.DB
             _sqlConnection.Close();
             _sqlConnection.Dispose();
         }
+
+        //private string GetNameProcedure(TypeAttributes attributes)
+        //{
+            
+        //}
     }
 }
