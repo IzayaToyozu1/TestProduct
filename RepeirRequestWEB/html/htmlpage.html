@@ -2,22 +2,72 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css"></link>
     <title></title>
 </head>
 <body>
-<div class="header">
-    <label for="dateFrom">От: </label>
-    <input type="datetime-local" id="dateFrom" name="dateFrom"/>
-    <label for="dateBefore">До: </label>
-    <input type="datetime-local" id="dateBefore" name="dateBefore"/>
-    <label for="objectType">Объект: </label>
-    <input type="text" id="objectType" name="objectType"/>
-    <button type="submit" formmethod="method" id="typeObject">...</button>
-    <label for="stage">Этап:</label>
-    <datalist id="stage"></datalist>
+    <div class="leftColumn"></div>
+    <div class="main">
+        <div class="header">
+            <div class="boxDatePeriod">
+                <div class="datePeriod">
+                    <label for="dateFrom">Период С: </label>
+                    <input type="datetime-local" id="dateFrom" name="dateFrom"/>
+                </div>
+                <div class="datePeriod">
+                    <label for="dateBefore">До: </label>
+                    <input type="datetime-local" id="dateBefore" name="dateBefore"/>
+                </div>
+            </div>
+            <div class="boxObjectShop">
+                <div class="datePeriod">
+                    <label for="objectType">Объект: </label>
+                    <input type="text" id="objectType" name="objectType" />
+                    <button type="submit" formmethod="method" id="typeObject">...</button>
+                    <button type="submit" formmethod="method" id="button"></button>
+                </div>
+                <div class="datePeriod">
+                    <label for="stage">Этап:</label>
+                    <select class="listBox" id="listBoxStage">
+                    </select>
+                </div>
+            </div>
+            <div class="boxExecutor">
+                <div class="datePeriod">
+                    <label>Статус:</label>
+                    <select class="listBox" id="statusList"></select>
+                </div>
+                <dib class="datePeriod">
+                    <label>Исполнитель:</label>
+                    <select class="listBox" id="executorList"></select>
+                </dib>
+            </div>
+        </div>
+
+        <div class="dataTable">
+            <ul class="dataTableRepair" id="tableRepair">
+            </ul>
+        </div>
+
+        <div class="infoDataRow"></div>
     </div>
-<div class="dataTable"></div>
-<div class="infoDataRow"></div>
 <div class="chatRequest"></div>
+<script>
+    var data = await fetch("/api/GetRequestAll", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            
+        })
+    });
+    var table = document.getElementById("tableRepair");
+    for (var i = 0; i < data.length; i++) {
+        var row = table.insertRow(i + 1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = data[i].name
+    }
+</script>
 </body>
 </html>
