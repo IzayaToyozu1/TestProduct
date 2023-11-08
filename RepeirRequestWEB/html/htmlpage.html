@@ -45,29 +45,53 @@
         </div>
 
         <div class="dataTable">
-            <ul class="dataTableRepair" id="tableRepair">
-            </ul>
+            <table class="dataTableRepair" id="tableRepair">
+            </table>
         </div>
 
         <div class="infoDataRow"></div>
     </div>
 <div class="chatRequest"></div>
 <script>
-    var data = await fetch("/api/GetRequestAll", {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            
-        })
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch("/api/GetRequestAll?start=8-11-2019&end=1-1-2023&typeService=1&withAccess=true")
+            .then(response => response.json())
+            .then(data => {
+                var table = document.getElementById("tableRepair");
+                data.forEach(function (item) {
+                    var row = table.insertRow();
+                    var id = row.insertCell(0);
+                    var Number = row.insertCell(1);
+                    var DateSubmission = row.insertCell(2);
+                    var nameObject = row.insertCell(3);
+                    var Cabinet = row.insertCell(4);
+                    var ipAddress = row.insertCell(5);
+                    var FIO = row.insertCell(6);
+                    var cName = row.insertCell(7);
+                    var resName = row.insertCell(8);
+                    var DateEnd = row.insertCell(9);
+                    var countHour = row.insertCell(10);
+                    var nameStatus = row.insertCell(11);
+                    var strComment = row.insertCell(12);
+                    var CountDoc = row.insertCell(13);
+
+                    id.innerHTML = item.Id;
+                    Number.innerHTML = item.Number;
+                    DateSubmission.innerHTML = item.DateSubmission;
+                    nameObject.innerHTML = item.nameObject;
+                    Cabinet.innerHTML = item.Cabinet;
+                    ipAddress.innerHTML = item.ip_address;
+                    FIO.innerHTML = item.FIO;
+                    cName.innerHTML = item.cName;
+                    resName.innerHTML = item.resName;
+                    DateEnd.innerHTML = item.DateEnd;
+                    countHour.innerHTML = item.countHour;
+                    nameStatus.innerHTML = item.nameStatus;
+                    strComment.innerHTML = item.strComment;
+                    CountDoc.innerHTML = item.CountDoc;
+                });
+            });
     });
-    var table = document.getElementById("tableRepair");
-    for (var i = 0; i < data.length; i++) {
-        var row = table.insertRow(i + 1);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        cell1.innerHTML = data[i].name
-    }
 </script>
 </body>
 </html>
