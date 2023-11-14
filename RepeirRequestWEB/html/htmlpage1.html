@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/style1.css"></link>
+    <title></title>
+</head>
+<body>
+    <div class="leftColumn"></div>
+    <div class="main">
+        <div class="header">
+            <div class="boxDatePeriod">
+                <div class="datePeriod">
+                    <label for="dateFrom">Период С: </label>
+                    <input type="datetime-local" id="dateFrom" name="dateFrom" />
+                </div>
+                <div class="datePeriod">
+                    <label for="dateBefore">До: </label>
+                    <input type="datetime-local" id="dateBefore" name="dateBefore" />
+                </div>
+            </div>
+            <div class="boxObjectShop">
+                <div class="datePeriod">
+                    <label for="objectType">Объект: </label>
+                    <input type="text" id="objectType" name="objectType" />
+                    <button type="submit" formmethod="method" id="typeObject">...</button>
+                    <button type="submit" formmethod="method" id="button"></button>
+                </div>
+                <div class="datePeriod">
+                    <label for="stage">Этап:</label>
+                    <select class="listBox" id="listBoxStage">
+                    </select>
+                </div>
+            </div>
+            <div class="boxExecutor">
+                <div class="datePeriod">
+                    <label>Статус:</label>
+                    <select class="listBox" id="statusList"></select>
+                </div>
+                <dib class="datePeriod">
+                    <label>Исполнитель:</label>
+                    <select class="listBox" id="executorList"></select>
+                </dib>
+            </div>
+        </div>
+
+        <div class="dataTable" id="dataRequests">
+            <div class="request">
+                <div class="requestItem">
+                    <span class="valueItemReques">№ заявки:</span>
+                    <span class="valueItemReques" id="valueNumbRequest"> value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Дата подачи:</span>
+                    <span class="valueItemReques" id="valueDateSubmission"> value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Объект:</span>
+                    <span class="valueItemReques" id="valueNameObject"> value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">№ кабинета:</span>
+                    <span class="valueItemReques" id="valueNumbCabinet"> value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">IP адрес:</span>
+                    <span class="valueItemReques" id="valueIpAddress"> value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">ФИО:</span>
+                    <span class="valueItemReques" id="valueFIO"> value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Вид работ:</span>
+                    <span class="valueItemReques" id="valueTypeWork"> value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Исполнитель:</span>
+                    <span class="valueItemReques" id="valueExecutor">value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Дата выполнения:</span>
+                    <span class="valueItemReques" id="valueDataCompletion">value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Продолжительность:</span>
+                    <span class="valueItemReques" id="valueCountHour">value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Статус:</span>
+                    <span class="valueItemReques" id="valueNameStatus">value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Комментарий:</span>
+                    <span class="valueItemReques" id="valueStrComment">value</span>
+                </div>
+                <div class="requestItem">
+                    <span class="valueItemReques">Кол-во файлов:</span>
+                    <span class="valueItemReques" id="valueCountDoc">value</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="infoDataRow"></div>
+    </div>
+    <div class="chatRequest"></div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        let dictionaryRequst = {
+            number: '№ заявки:',
+            dateSubmission: 'Дата подачи:',
+            nameObject: 'Объект:',
+            cabinet: 'Кабинет:', 
+            ip_address: 'IP адрес:', 
+            fio: 'ФИО:',
+            cName: 'Вид работ:',
+            resName: 'Исполнитель:', 
+            dateEnd: 'Дата выполнения:',
+            countHour: 'Продолжительность:',
+            nameStatus: 'Статус:',
+            strComment: 'Комментарий:', 
+            countDoc: 'Кол-во файлов:'
+        };
+
+
+        fetch("/api/GetRequestAll?start=8-11-2020&end=1-1-2023&typeService=1&withAccess=true")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(function (item) {
+                    var table = document.getElementById('dataRequests');
+                    var elementRequest = document.createElement('div');
+                    elementRequest.classList.add('request');
+                    elementRequest.id = item.id;
+                    for (let key in item) {
+                        if (key in dictionaryRequst) {
+
+                            var elementRequestItem = document.createElement('div');
+                            elementRequestItem.classList.add('requestItem');
+                            elementRequestItem.id = 'element' + key;
+
+                            var elementRequestNameText = document.createElement('div');
+                            elementRequestNameText.classList.add('valueItemReques');
+                            elementRequestNameText.textContent = dictionaryRequst[key];
+
+                            var elementRequestValue = document.createElement('div');
+                            elementRequestValue.classList.add('valueItemReques');
+                            elementRequestValue.textContent = item[key];
+
+                            elementRequest.insertAdjacentElement('afterbegin', elementRequestItem);
+                            elementRequestItem.insertAdjacentElement('afterbegin', elementRequestValue);
+                            elementRequestItem.insertAdjacentElement('afterbegin', elementRequestNameText);
+                        }
+
+                        table.insertAdjacentElement('afterbegin', elementRequest);
+                    }
+                });
+            });
+    });
+    </script>
+</body>
+</html>

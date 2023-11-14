@@ -54,11 +54,31 @@
 <div class="chatRequest"></div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+        var columnNames = ['ID', '№ заявки', 'Дата подачи', 'Объект', 'Кабинет', 'IP адрес', 'ФИО',
+            'Вид работ', 'Исполнитель', 'Дата выполнения', 'Продолжительность', 'Статус', 'Комментарий', 'Кол-во файлов']
+
+        var table = document.getElementById("tableRepair");
+
+        var headerRow = document.createElement('tr');
+        columnNames.forEach(function (columnName) {
+            var th = document.createElement('th');
+            th.textContent = columnName;
+            if (columnName == 'Кабинет') {
+                th.classList.add('Cabinet')
+            }
+            headerRow.appendChild(th);
+        });
+
+        table.insertAdjacentElement('afterbegin', headerRow);
+
         fetch("/api/GetRequestAll?start=8-11-2019&end=1-1-2023&typeService=1&withAccess=true")
             .then(response => response.json())
             .then(data => {
-                var table = document.getElementById("tableRepair");
                 data.forEach(function (item) {
+
+
+
                     var row = table.insertRow();
                     var id = row.insertCell(0);
                     var Number = row.insertCell(1);
@@ -75,20 +95,24 @@
                     var strComment = row.insertCell(12);
                     var CountDoc = row.insertCell(13);
 
-                    id.innerHTML = item.Id;
-                    Number.innerHTML = item.Number;
-                    DateSubmission.innerHTML = item.DateSubmission;
-                    nameObject.innerHTML = item.nameObject;
-                    Cabinet.innerHTML = item.Cabinet;
-                    ipAddress.innerHTML = item.ip_address;
-                    FIO.innerHTML = item.FIO;
-                    cName.innerHTML = item.cName;
-                    resName.innerHTML = item.resName;
-                    DateEnd.innerHTML = item.DateEnd;
-                    countHour.innerHTML = item.countHour;
-                    nameStatus.innerHTML = item.nameStatus;
-                    strComment.innerHTML = item.strComment;
-                    CountDoc.innerHTML = item.CountDoc;
+                    //Cabinet.classList.add('Cabinet');
+
+                    id.innerHTML = item.id;
+                    Number.innerHTML = item.number !== null ? item.number : '';
+                    DateSubmission.innerHTML = item.dateSubmission !== null ? item.dateSubmission : '';
+                    nameObject.innerHTML = item.nameObject !== null ? item.nameObject : '';
+                    Cabinet.innerHTML = item.cabinet !== null ? item.cabinet : '';
+                    ipAddress.innerHTML = item.ip_address !== null ? item.ip_address : '';
+                    FIO.innerHTML = item.fio !== null ? item.fio : '';
+                    cName.innerHTML = item.cName !== null ? item.cName : '';
+                    resName.innerHTML = item.resName !== null ? item.resName : '';
+                    DateEnd.innerHTML = item.dateEnd !== null ? item.dateEnd : '';
+                    countHour.innerHTML = item.countHour !== null ? item.countHour : '';
+                    nameStatus.innerHTML = item.nameStatus !== null ? item.nameStatus : '';
+                    strComment.innerHTML = item.strComment !== null ? item.strComment : '';
+                    CountDoc.innerHTML = item.countDoc !== null ? item.countDoc : '';
+
+                    
                 });
             });
     });

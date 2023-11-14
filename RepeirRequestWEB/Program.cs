@@ -65,7 +65,7 @@ namespace TestProduct
                 appBuilder.Run(async context =>
                 {
                     context.Response.ContentType = "text/html; charset=utf-8";
-                    await context.Response.SendFileAsync("html/htmlpage.html");
+                    await context.Response.SendFileAsync("html/htmlpage1.html");
                 });
             });
 
