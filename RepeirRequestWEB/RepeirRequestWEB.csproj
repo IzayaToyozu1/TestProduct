@@ -13,6 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\css\default.css" />
+    <Content Remove="wwwroot\js\common.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="html\favicon.ico" />
   </ItemGroup>
 
@@ -26,7 +31,11 @@
   <ItemGroup>
     <Folder Include="Resource\" />
     <Folder Include="Service\" />
-    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\default.css" />
+    <None Include="wwwroot\js\common.js" />
   </ItemGroup>
 
   <ItemGroup>

@@ -33,39 +33,23 @@
 }
 
 .main {
-    height: 100vh;
-    border: 2px solid red;
+    height: 100vw;
+    border: 4px solid #0015ff;
     padding: 15px;
 }
 
+.conteinerMain{
+    display: block;
+}
+
 body {
-    display: flex;
-    background-color: #fff;
+    display: grid;
+    width: 100%;
+    background-color: cornsilk;
     color: #333;
     font-family: Arial, Helvetica, sans-serif;
     padding: 1em;
     margin: 0;
-}
-
-h1 {
-    color: #375e97;
-    font-size: 2em;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    border-bottom: 1px solid #375e97;
-}
-
-h2 {
-    font-size: 1.5em;
-}
-
-.job-title {
-    color: #999999;
-    font-weight: bold;
-}
-
-a:link,
-a:visited {
-    color: #fb6542;
 }
 
 a:hover {
@@ -73,25 +57,25 @@ a:hover {
 }
 
 div.dataTable {
-    display: block;
-    margin: 15px;
+    display: grid;
     overflow: auto;
     max-height: 85vh;
-    padding: 3px;
-    gap: 50px;
+    gap: 5px;
+    -ms-overflow-style: none;
+    /* IE и Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
-div.request{
+div.request {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: #b7b7b7;
     width: auto;
     height: 70px;
-    padding: 5px;
-    font-size: 12px;
-    background-color: #b3faff;
-    border: 4px solid #14ffd4;
-    border-radius: 6px; 
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+    font: bold 30px small;
+    gap: 3px;
 }
 
     div.request:hover {
@@ -102,16 +86,24 @@ div.request{
         display: inline-flex;
         min-width: 100px;
         max-width: 400px;
-        border: 1.5px solid black;
-        border-radius: 3px;
-        background-color: #ffffff;
-        height: 20px;
-        gap: 5px;
-        padding: 2px;
+        font
     }
 
-    span.valueItemReques{
+    div.numberAndTypeRequest{
+        display: inline-flex;
         width: auto;
+        height: 20px;
+    }
+
+    div.infoReqest{
+        display: inline-block;
+        width: auto;
+        height: 10px;
+    }
+
+    span.valueItemRequest{
+        width: auto;
+        color: white;
         font-size: 12px;
         font-style: italic;
     }
@@ -121,34 +113,14 @@ div.request{
     padding: 10px;
     height: 8vh;
     width: auto;
-    border: 3px solid gold;
-    margin: 5px;
+    border: 3px solid #0c39e8;
+    background: #abf8f8;
 }
-
-.leftColumn {
-}
-
-.listBox {
-    width: 100px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-}
-
-    .listBox option {
-        padding: 2px;
-    }
 
 .boxDatePeriod {
     width: 35vw;
     height: 100%;
     padding: 5px;
-    border: 4px solid red;
-}
-
-.datePeriod {
-    padding: 5px;
-    border: 2px solid green;
 }
 
 .boxObjectShop {
@@ -156,13 +128,15 @@ div.request{
     height: 100%;
     width: 35vw;
     padding: 5px;
-    border: 4px solid blue;
 }
 
 .boxExecutor {
     display: block;
     padding: 5px;
     height: 100%;
-    border: 4px solid purple;
     width: 35vw;
+}
+
+.datePeriod {
+    padding: 5px;
 }

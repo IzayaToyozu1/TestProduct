@@ -29,7 +29,6 @@ namespace TestProduct.DB
             List<T> result = new List<T>();
             Type typeItemT = typeof(T);
             var propItemT = typeItemT.GetProperties();
-            var attribute = typeItemT.GetCustomAttribute<TableAttribute>();
 
             if(nameProc == null) 
                 nameProc = $"Repair.Get{typeItemT.Name}s";
@@ -40,7 +39,7 @@ namespace TestProduct.DB
 
             while (reader.Read())
             {
-                object obj = Activator.CreateInstance(typeItemT);
+                object? obj = Activator.CreateInstance(typeItemT);
                 PropertyInfo propInfo;
                 for (int i = 0; i < propItemT.Length; i++)
                 {

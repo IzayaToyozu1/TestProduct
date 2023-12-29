@@ -1,0 +1,160 @@
+@media only screen and (max-width: 960px) {
+
+    .contentBox{
+        display: none;
+    }
+
+    .panelChat {
+        width: calc(100% - 45px);
+    }
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1920px){
+    .contentBox {
+        width: 80%;
+        display: flex1;
+    }
+
+    .panelChat {
+        width: 18.5%;
+    }
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    background-color: #262a38;
+    color: white;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    outline: none;
+}
+
+.header {
+    display: block;
+    height: 8vh;
+    padding: 5px;
+    font: bold 14px;
+    font-style: Comic Sans;
+}
+
+.headerContent{
+    display: flex;
+    color: white;
+}
+
+.wrapper {
+    height: 90vh;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.panelLeft{
+    width: 45px;
+
+}
+
+
+
+.contentBox{
+}
+
+.panelChat {
+    min-width: 330px;
+    max-width: 1000px;
+    background-color: #2f3346;
+    caret-color: transparent;
+}
+
+.messagePanel {
+    display: block;
+    height: calc(100% - 50px - 10px);
+    margin: 5px;
+    caret-color: transparent;
+}
+
+.messageSenderPanel {
+    display: flex;
+    flex-wrap: wrap;
+    height: 50px;
+    background-color: #313649;
+    margin: 5px;
+}
+
+.tbMessage {
+    max-height: 300px;
+    min-width: calc(90% - 1010px);
+    width: calc(100% - 165px);
+    margin: 8px;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    resize: vertical; /* –азрешение на изменение высоты (вертикальное) */
+    height: auto; /* јвтоматическое определение высоты */
+    white-space: pre-wrap;
+    overflow: hidden;
+    resize: none;
+    font-size: 14px;
+}
+button.sender{
+
+}
+
+.contentChatBox {
+    /*
+    min-height: 80px;
+    max-height: 300px;*/
+    height: 100px;
+    padding: 5px;
+    box-sizing: border-box;
+    font: bold 14px Comic;
+    font-style: Palatino;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+    .contentChatBox:hover {
+        background-color: #474d6d;
+    }
+
+.headerChat{
+    display: flex;
+    height: 50%;
+    flex-wrap: wrap;
+}
+
+.itemChat{
+    margin: 5px;
+    display: block;
+    height: 14px;
+}
+
+input {
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    font: bold 12px arial;
+}
+
+button, select {
+    margin: 5px;
+    font: bolder 14px Comic Sans;
+    background-color: #263863; /* Green background color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add some rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+}
+
+.btSender{
+    width: 125px;
+}

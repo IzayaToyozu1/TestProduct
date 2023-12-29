@@ -69,6 +69,21 @@ namespace TestProduct
                 });
             });
 
+            app.Map("/htmltest", appBuilder =>
+            {
+                appBuilder.Use(async (context, next) =>
+                {
+                    await next();
+                });
+
+                appBuilder.Run(async context =>
+                {
+                    context.Response.ContentType = "text/html; charset=utf-8";
+                    await context.Response.SendFileAsync("html/test.html");
+                });
+            });
+
+
             app.MapGet("/api/GetRequestAll", (string start, string end,
                 int typeService, bool withAccess) =>
             {
@@ -89,6 +104,7 @@ namespace TestProduct
                 context.Dispose();
                 return Results.Json(repeirRequsts);
             });
+
 
             //app.MapGet("/api/GetRequestAll",
             //    (string start, string end, int userId, int typeService, bool withAccess) =>

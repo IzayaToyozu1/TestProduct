@@ -4,10 +4,13 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/style1.css"></link>
     <title></title>
+    <script src="RequestJS.js"></script>
 </head>
 <body>
-    <div class="leftColumn"></div>
-    <div class="main">
+    <div class="">
+
+    </div>
+    <div class="conteinerMain">
         <div class="header">
             <div class="boxDatePeriod">
                 <div class="datePeriod">
@@ -44,119 +47,25 @@
             </div>
         </div>
 
-        <div class="dataTable" id="dataRequests">
-            <div class="request">
-                <div class="requestItem">
-                    <span class="valueItemReques">№ заявки:</span>
-                    <span class="valueItemReques" id="valueNumbRequest"> value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Дата подачи:</span>
-                    <span class="valueItemReques" id="valueDateSubmission"> value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Объект:</span>
-                    <span class="valueItemReques" id="valueNameObject"> value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">№ кабинета:</span>
-                    <span class="valueItemReques" id="valueNumbCabinet"> value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">IP адрес:</span>
-                    <span class="valueItemReques" id="valueIpAddress"> value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">ФИО:</span>
-                    <span class="valueItemReques" id="valueFIO"> value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Вид работ:</span>
-                    <span class="valueItemReques" id="valueTypeWork"> value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Исполнитель:</span>
-                    <span class="valueItemReques" id="valueExecutor">value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Дата выполнения:</span>
-                    <span class="valueItemReques" id="valueDataCompletion">value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Продолжительность:</span>
-                    <span class="valueItemReques" id="valueCountHour">value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Статус:</span>
-                    <span class="valueItemReques" id="valueNameStatus">value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Комментарий:</span>
-                    <span class="valueItemReques" id="valueStrComment">value</span>
-                </div>
-                <div class="requestItem">
-                    <span class="valueItemReques">Кол-во файлов:</span>
-                    <span class="valueItemReques" id="valueCountDoc">value</span>
+        <div class="main">
+            <div class="dataTable" id="dataRequests">
+                <div class="request">
+                    <div class="requestItem">
+                        <div class="numberAndTypeRequest">
+                            <span class="valueItemRequest"> №Заявкм</span>
+                            <span class="valueItemRequest">:</span>
+                            <span class="valueItemRequest"> Тип заявки</span>
+                        </div>
+                    </div>
+                    <div class="infoReqest">
+                        <span class="valueItemRequest">Каб</span>
+                        <span class="valueItemRequest">ФИО</span>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="infoDataRow"></div>
     </div>
-    <div class="chatRequest"></div>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-
-        let dictionaryRequst = {
-            number: '№ заявки:',
-            dateSubmission: 'Дата подачи:',
-            nameObject: 'Объект:',
-            cabinet: 'Кабинет:', 
-            ip_address: 'IP адрес:', 
-            fio: 'ФИО:',
-            cName: 'Вид работ:',
-            resName: 'Исполнитель:', 
-            dateEnd: 'Дата выполнения:',
-            countHour: 'Продолжительность:',
-            nameStatus: 'Статус:',
-            strComment: 'Комментарий:', 
-            countDoc: 'Кол-во файлов:'
-        };
 
 
-        fetch("/api/GetRequestAll?start=8-11-2020&end=1-1-2023&typeService=1&withAccess=true")
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(function (item) {
-                    var table = document.getElementById('dataRequests');
-                    var elementRequest = document.createElement('div');
-                    elementRequest.classList.add('request');
-                    elementRequest.id = item.id;
-                    for (let key in item) {
-                        if (key in dictionaryRequst) {
-
-                            var elementRequestItem = document.createElement('div');
-                            elementRequestItem.classList.add('requestItem');
-                            elementRequestItem.id = 'element' + key;
-
-                            var elementRequestNameText = document.createElement('div');
-                            elementRequestNameText.classList.add('valueItemReques');
-                            elementRequestNameText.textContent = dictionaryRequst[key];
-
-                            var elementRequestValue = document.createElement('div');
-                            elementRequestValue.classList.add('valueItemReques');
-                            elementRequestValue.textContent = item[key];
-
-                            elementRequest.insertAdjacentElement('afterbegin', elementRequestItem);
-                            elementRequestItem.insertAdjacentElement('afterbegin', elementRequestValue);
-                            elementRequestItem.insertAdjacentElement('afterbegin', elementRequestNameText);
-                        }
-
-                        table.insertAdjacentElement('afterbegin', elementRequest);
-                    }
-                });
-            });
-    });
-    </script>
 </body>
 </html>
