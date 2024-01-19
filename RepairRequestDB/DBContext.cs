@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.PortableExecutable;
 using Microsoft.Data.SqlClient;
 using RepairRequestDB.AdditionalProperties;
 
@@ -82,6 +83,26 @@ namespace RepairRequestDB
             return result.ToArray();
         }
 
+        public void ProcSetData(string nameScheme, string nameProc, DbParametrProc paramProc = null)
+        {
+
+        }
+
+        private SqlDataReader ExecuteProcedure(string nameScheme, string nameProc, DbParametrProc paramProc = null)
+        {
+            SqlCommand command = new SqlCommand($"{nameScheme}.{nameProc}", _sqlConnection);
+            command.CommandType = CommandType.StoredProcedure;
+            if (paramProc != null)
+            {
+                foreach (var sqlParameter in paramProc.SqlNameParametr)
+                {
+                    command.Parameters.Add(sqlParameter);
+                }
+            }
+
+            return command.ExecuteReader();
+        }
+
         private Attribute[] GetAttributesClass<T>() where T : class 
         {
             Type typeItemT = typeof(T);
@@ -94,9 +115,15 @@ namespace RepairRequestDB
             return result.ToArray();
         }
 
-        private Attribute[] GetAttributesProperty(PropertyInfo info)
+        private Attribute[]? GetAttributesProperty(PropertyInfo info)
         {
-
+            List<Attribute> attributes = new List<Attribute>();
+            foreach (Attribute attr in info.GetCustomAttributes(false))
+            {
+                attributes.Add(attr);
+            }
+            
+            return attributes.ToArray();
         }
 
         private DbParameter GetParameter(Type type)

@@ -7,7 +7,7 @@ namespace RepairRequestDB.AdditionalProperties
     {
         public SqlParameter[] SqlNameParametr;
 
-        public DbParametrProc(string[]? sqlNameParametr, object[]? value, DbType[]? dbType)
+        public DbParametrProc(string[]? sqlNameParametr, object[]? value)
         {
             int countSqlNP = sqlNameParametr.Length;
             int countValue = value.Length;

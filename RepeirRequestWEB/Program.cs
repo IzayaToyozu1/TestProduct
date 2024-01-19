@@ -6,6 +6,9 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.EntityFrameworkCore;
+using RepairRequestDB;
+using RepairRequestDB.AdditionalProperties;
+using RepairRequestDB.Model;
 using TestProduct.DB;
 using TestProduct.TestNewMethod;
 using RepeirRequestBL.Model;
@@ -89,17 +92,16 @@ namespace TestProduct
             {
                 ApplicationRepairRequestContext context =
                     new ApplicationRepairRequestContext
-                        ("Server=192.168.5.85\\K21;" +
-                         "Database=dbase1;" +
-                         "User Id=SuperUser;" +
-                         "Password=fate;" +
-                          "MultipleActiveResultSets = True; " +
-                            "TrustServerCertificate = True"
-                         );
+                    ("Server=192.168.5.85\\K21;" +
+                     "Database=dbase1;" +
+                     "User Id=SuperUser;" +
+                     "Password=fate;" +
+                     "MultipleActiveResultSets = True; " +
+                     "TrustServerCertificate = True"
+                    );
                 DbParametrProc paramProc = new DbParametrProc(
                     new[] { "@start", "@end", "@typeService", "@WithAccess" },
-                    new object[] { DateTime.Parse(start), DateTime.Parse(end), typeService, withAccess },
-                    new[] { DbType.DateTime, DbType.DateTime, DbType.Int32, DbType.Boolean });
+                    new object[] { DateTime.Parse(start), DateTime.Parse(end), typeService, withAccess });
                 var repeirRequsts = context.GetItems<RequestRepair>(paramProc, "Repair.GetRepairRequests");
                 context.Dispose();
                 return Results.Json(repeirRequsts);
@@ -123,52 +125,48 @@ namespace TestProduct
 
             app.MapGet("/api/SetComment", (int id, bool type, string comment, int idWriter) =>
             {
-                var context = new ApplicationRepairRequestContext(connect);
+                var context = new DBContext(connect);
                 var paramProc = new DbParametrProc(
                     new[] { "@id", "@type", "@comment", "@idWriter" },
-                    new object[] { id, type, comment, idWriter },
-                    new[] { DbType.Int32, DbType.Boolean, DbType.String, DbType.Int32 });
-                context.ExecuteMethod(paramProc, "[Repair].[SetComment]");
+                    new object[] { id, type, comment, idWriter });
+                context.ProcGetData(paramProc);
             });
 
             app.MapGet("/api/GetMessChatRequest", (int idRequest) =>
             {
-                var context = new ApplicationRepairRequestContext(connect);
+                var context = new DBContext(connect);
                 var paramProc = new DbParametrProc(
                     new[] { "@id" },
-                    new object[] { idRequest },
-                    new[] { DbType.Int32 });
-                var requestMessChat = context.GetItems<RequestMessage>(paramProc, "[Repair].[GetCommentsById]");
+                    new object[] { idRequest });
+                var requestMessChat = context.ProcGetData<RequestMessage>(paramProc);
                 return Results.Json(requestMessChat);
             });
 
             app.MapGet("/api/GetCommentRequest", (int idRequestRepair) =>
             {
-                var context = new ApplicationRepairRequestContext(connect);
+                var context = new DBContext(connect);
                 var paramProc = new DbParametrProc(
                     new[] { "@id_RequestRepair" },
-                    new object[] { idRequestRepair },
-                    new[] { DbType.Int32 });
+                    new object[] { idRequestRepair });
                 var requestComments
-                    = context.GetItems<RequestComment>(paramProc, "[Repair].[getResponsibleComment]");
+                    = context.ProcGetData<RequestComment>(paramProc);
                 return Results.Json(requestComments);
             });
 
             app.MapGet("/api/SetCommentRequest", (int idRequest, string comment, int idUser) =>
             {
-                var context = new ApplicationRepairRequestContext(connect);
+                var context = new DBContext(connect);
                 var paramProc = new DbParametrProc(
                     new string[3] { "@id_RequestRepair", "@Comment", "@id_user" },
-                    new object[] { idRequest, comment, idUser },
-                    new DbType[3] { DbType.Int32, DbType.String, DbType.Int32 });
-                context.ExecuteMethod(paramProc, "[Repair].[setResponsibleComment]");
+                    new object[] { idRequest, comment, idUser });
+                context.ProcGetData<RequestComment>(paramProc);
 
             });
             
             app.Run();
         }
     }
-
+    
     public class Person
     {
         public string Id { get; set; } = "";

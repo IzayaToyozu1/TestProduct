@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RepairRequestDB\RepairRequestDB.csproj" />
     <ProjectReference Include="..\RepeirRequestBL\RepairRequestBL.csproj" />
   </ItemGroup>
 
