@@ -31,7 +31,7 @@ namespace TestProduct.DB
             var propItemT = typeItemT.GetProperties();
 
             if(nameProc == null) 
-                nameProc = $"Repair.Get{typeItemT.Name}s";
+                nameProc = $"Repair.{typeItemT.Name}";
             SqlCommand command = new SqlCommand(nameProc, _sqlConnection);
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.AddRange(proc.SqlNameParametr);

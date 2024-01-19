@@ -1,13 +1,13 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace TestProduct.DB
+namespace RepairRequestDB.AdditionalProperties
 {
     public class DbParametrProc
     {
         public SqlParameter[] SqlNameParametr;
 
-        public DbParametrProc(string[]? sqlNameParametr, object[]? value)
+        public DbParametrProc(string[]? sqlNameParametr, object[]? value, DbType[]? dbType)
         {
             int countSqlNP = sqlNameParametr.Length;
             int countValue = value.Length;
@@ -23,7 +23,7 @@ namespace TestProduct.DB
                 SqlNameParametr[i] = new SqlParameter
                 {
                     ParameterName = sqlNameParametr[i],
-                    DbType = Convert,
+                    DbType = ConvertTypeToDbType.ToDbType(value[i].GetType()),
                     Value = value[i]
                 };
             }

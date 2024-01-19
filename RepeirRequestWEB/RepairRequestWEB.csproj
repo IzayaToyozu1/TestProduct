@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Resource\" />
-    <Folder Include="Service\" />
+    <Folder Include="Service\ApiService\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RepeirRequestBL\RepeirRequestBL.csproj" />
+    <ProjectReference Include="..\RepeirRequestBL\RepairRequestBL.csproj" />
   </ItemGroup>
 
 </Project>
