@@ -30,34 +30,17 @@ namespace RepairRequestDB
             SqlDataReader reader;
             Type classType = typeof(T);
             List<T> result = new List<T>();
-            Attribute[] attributesClass = GetAttributesClass<T>();
 
-            NameProcAttribute nameProcAttribute = (NameProcAttribute)attributesClass
-                .FirstOrDefault(item => item.GetType() == typeof(NameProcAttribute));
-            NameSchemeAttribute nameSchemeAttribute = (NameSchemeAttribute)attributesClass
-                .FirstOrDefault(item => item.GetType() == typeof(NameSchemeAttribute));
+            nameProc = GetNameProc(classType);
+            nameScheme = GetNameScheme(classType);
 
-            nameProc = nameProcAttribute == null ? $"Get{classType.Name}" : nameProcAttribute.Name;
-            nameScheme = nameSchemeAttribute == null ? $"dbo" : nameSchemeAttribute.Name;
-            
-            SqlCommand command = new SqlCommand($"{nameScheme}.{nameProc}", _sqlConnection);
-            command.CommandType = CommandType.StoredProcedure;
-            if(paramProc != null) 
-            {
-                foreach (var sqlParameter in paramProc.SqlNameParametr)
-                {
-                    command.Parameters.Add(sqlParameter);
-                }
-            }
-
-            reader = command.ExecuteReader();
+            reader = ExecuteProcedure(nameScheme, nameProc, paramProc);
 
             while (reader.Read())
             {
                 object? obj = Activator.CreateInstance(classType);
                 foreach (var propItem in classType.GetProperties())
                 {
-                    string columnName;
                     object? value;
                     var attr = GetAttributesProperty(propItem);
                     if (attr != null)
@@ -83,9 +66,35 @@ namespace RepairRequestDB
             return result.ToArray();
         }
 
-        public void ProcSetData(string nameScheme, string nameProc, DbParametrProc paramProc = null)
+        public void ProcSetData<T>(DbParametrProc paramProc = null) where T : class
         {
+            string nameProc;
+            string nameScheme;
+            Type classType = typeof(T);
 
+            nameProc = GetNameProc(classType);
+            nameScheme = GetNameScheme(classType);
+
+            ExecuteProcedure(nameScheme, nameProc, paramProc);
+        }
+
+        public void Dispose()
+        {
+            _sqlConnection.Dispose();
+        }
+
+        private string GetNameProc(Type type)
+        {
+            NameProcAttribute nameProcAttribute = (NameProcAttribute)GetAttributesClass(type)
+                .FirstOrDefault(item => item.GetType() == typeof(NameProcAttribute));
+            return nameProcAttribute == null ? $"Get{type.Name}" : nameProcAttribute.Name;
+        }
+
+        private string GetNameScheme(Type type)
+        {
+            NameSchemeAttribute nameSchemeAttribute = (NameSchemeAttribute)GetAttributesClass(type)
+                .FirstOrDefault(item => item.GetType() == typeof(NameSchemeAttribute));
+            return nameSchemeAttribute == null ? $"dbo" : nameSchemeAttribute.Name;
         }
 
         private SqlDataReader ExecuteProcedure(string nameScheme, string nameProc, DbParametrProc paramProc = null)
@@ -103,11 +112,10 @@ namespace RepairRequestDB
             return command.ExecuteReader();
         }
 
-        private Attribute[] GetAttributesClass<T>() where T : class 
+        private Attribute[] GetAttributesClass(Type type)
         {
-            Type typeItemT = typeof(T);
             List<Attribute> result = new List<Attribute>();
-            foreach (Attribute attr in typeItemT.GetCustomAttributes(false))
+            foreach (Attribute attr in type.GetCustomAttributes(false))
             {
                 result.Add(attr);
             }
@@ -124,11 +132,6 @@ namespace RepairRequestDB
             }
             
             return attributes.ToArray();
-        }
-
-        private DbParameter GetParameter(Type type)
-        {
-
         }
     }
 }

@@ -1,17 +1,10 @@
-using Microsoft.AspNetCore.Builder;
-using System;
-using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Http.Connections;
-using Microsoft.EntityFrameworkCore;
 using RepairRequestDB;
 using RepairRequestDB.AdditionalProperties;
 using RepairRequestDB.Model;
-using TestProduct.DB;
+using RepairRequestWEB.Configure;
 using TestProduct.TestNewMethod;
-using RepeirRequestBL.Model;
 
 namespace TestProduct
 {
@@ -41,127 +34,7 @@ namespace TestProduct
             app.UseStaticFiles();
             app.UseCors();
 
-
-            app.MapHub<ChatHub>("/Chat");
-
-            app.Map("/KekaChat", appBuilder =>
-            {
-                appBuilder.Use(async (context, next) =>
-                {
-                    await next();
-                });
-
-                appBuilder.Run(async context =>
-                {
-                    context.Response.ContentType = "text/html; charset=utf-8";
-                    await context.Response.SendFileAsync("html/chatpage.html");
-                });
-            });
-
-            app.Map("/htmlpage", appBuilder =>
-            {
-                appBuilder.Use(async (context, next) =>
-                {
-                    await next();
-                });
-
-                appBuilder.Run(async context =>
-                {
-                    context.Response.ContentType = "text/html; charset=utf-8";
-                    await context.Response.SendFileAsync("html/htmlpage1.html");
-                });
-            });
-
-            app.Map("/htmltest", appBuilder =>
-            {
-                appBuilder.Use(async (context, next) =>
-                {
-                    await next();
-                });
-
-                appBuilder.Run(async context =>
-                {
-                    context.Response.ContentType = "text/html; charset=utf-8";
-                    await context.Response.SendFileAsync("html/test.html");
-                });
-            });
-
-
-            app.MapGet("/api/GetRequestAll", (string start, string end,
-                int typeService, bool withAccess) =>
-            {
-                ApplicationRepairRequestContext context =
-                    new ApplicationRepairRequestContext
-                    ("Server=192.168.5.85\\K21;" +
-                     "Database=dbase1;" +
-                     "User Id=SuperUser;" +
-                     "Password=fate;" +
-                     "MultipleActiveResultSets = True; " +
-                     "TrustServerCertificate = True"
-                    );
-                DbParametrProc paramProc = new DbParametrProc(
-                    new[] { "@start", "@end", "@typeService", "@WithAccess" },
-                    new object[] { DateTime.Parse(start), DateTime.Parse(end), typeService, withAccess });
-                var repeirRequsts = context.GetItems<RequestRepair>(paramProc, "Repair.GetRepairRequests");
-                context.Dispose();
-                return Results.Json(repeirRequsts);
-            });
-
-
-            //app.MapGet("/api/GetRequestAll",
-            //    (string start, string end, int userId, int typeService, bool withAccess) =>
-            //    {
-            //        ApplicationRepairRequestContext context = new ApplicationRepairRequestContext(connect);
-            //        DbParametrProc paramProc = new DbParametrProc(
-            //            new[] { "@start", "@end", "@typeService", "@WithAccess" },
-            //            new object[] { DateTime.Parse(start), DateTime.Parse(end), typeService, withAccess },
-            //            new[] { DbType.DateTime, DbType.DateTime, DbType.Int32, DbType.Boolean });
-
-            //        var repairRequsts =
-            //            context.GetItems<RequestRepair>(paramProc, "Repair.GetRepairRequests");
-            //        context.Dispose();
-            //        return Results.Json(repairRequsts);
-            //    });
-
-            app.MapGet("/api/SetComment", (int id, bool type, string comment, int idWriter) =>
-            {
-                var context = new DBContext(connect);
-                var paramProc = new DbParametrProc(
-                    new[] { "@id", "@type", "@comment", "@idWriter" },
-                    new object[] { id, type, comment, idWriter });
-                context.ProcGetData(paramProc);
-            });
-
-            app.MapGet("/api/GetMessChatRequest", (int idRequest) =>
-            {
-                var context = new DBContext(connect);
-                var paramProc = new DbParametrProc(
-                    new[] { "@id" },
-                    new object[] { idRequest });
-                var requestMessChat = context.ProcGetData<RequestMessage>(paramProc);
-                return Results.Json(requestMessChat);
-            });
-
-            app.MapGet("/api/GetCommentRequest", (int idRequestRepair) =>
-            {
-                var context = new DBContext(connect);
-                var paramProc = new DbParametrProc(
-                    new[] { "@id_RequestRepair" },
-                    new object[] { idRequestRepair });
-                var requestComments
-                    = context.ProcGetData<RequestComment>(paramProc);
-                return Results.Json(requestComments);
-            });
-
-            app.MapGet("/api/SetCommentRequest", (int idRequest, string comment, int idUser) =>
-            {
-                var context = new DBContext(connect);
-                var paramProc = new DbParametrProc(
-                    new string[3] { "@id_RequestRepair", "@Comment", "@id_user" },
-                    new object[] { idRequest, comment, idUser });
-                context.ProcGetData<RequestComment>(paramProc);
-
-            });
+           RouteConfigurator.ConfigureRoutes(app);
             
             app.Run();
         }
