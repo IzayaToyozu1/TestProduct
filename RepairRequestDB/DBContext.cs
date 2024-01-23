@@ -10,7 +10,7 @@ using RepairRequestDB.AdditionalProperties;
 
 namespace RepairRequestDB
 {
-    public class DBContext
+    public class DBContext: IDisposable
     {
         private readonly SqlConnection _sqlConnection;
 
@@ -31,7 +31,7 @@ namespace RepairRequestDB
             Type classType = typeof(T);
             List<T> result = new List<T>();
 
-            nameProc = GetNameProc(classType);
+            nameProc = GetNameProc(classType, TypeProcedure.Get);
             nameScheme = GetNameScheme(classType);
 
             reader = ExecuteProcedure(nameScheme, nameProc, paramProc);
@@ -72,7 +72,7 @@ namespace RepairRequestDB
             string nameScheme;
             Type classType = typeof(T);
 
-            nameProc = GetNameProc(classType);
+            nameProc = GetNameProc(classType, TypeProcedure.Set);
             nameScheme = GetNameScheme(classType);
 
             ExecuteProcedure(nameScheme, nameProc, paramProc);
@@ -83,11 +83,18 @@ namespace RepairRequestDB
             _sqlConnection.Dispose();
         }
 
-        private string GetNameProc(Type type)
+        private string GetNameProc(Type type, TypeProcedure typeProc)
         {
             NameProcAttribute nameProcAttribute = (NameProcAttribute)GetAttributesClass(type)
                 .FirstOrDefault(item => item.GetType() == typeof(NameProcAttribute));
-            return nameProcAttribute == null ? $"Get{type.Name}" : nameProcAttribute.Name;
+            if (nameProcAttribute == null)
+                return $"Get{type.Name}";
+            else
+            {
+
+                return typeProc == TypeProcedure.Get ? nameProcAttribute.NameGet : nameProcAttribute.NameSet;
+            }
+
         }
 
         private string GetNameScheme(Type type)
@@ -133,5 +140,10 @@ namespace RepairRequestDB
             
             return attributes.ToArray();
         }
+    }
+
+    enum TypeProcedure
+    {
+        Get, Set
     }
 }

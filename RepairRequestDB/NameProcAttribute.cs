@@ -2,11 +2,13 @@
 {
     public class NameProcAttribute: Attribute
     {
-        public string Name { get; }
+        public string NameGet { get; }
+        public string NameSet { get; }
 
-        public NameProcAttribute(string name)
+        public NameProcAttribute(string nameGet, string nameSet)
         {
-            Name = name;
+            NameGet = nameGet;
+            NameSet = nameSet;
         }
     }
 }

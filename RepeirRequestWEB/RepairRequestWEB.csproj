@@ -18,14 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="html\favicon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="html\chatpage.html" />
     <Content Include="favicon.ico" />
-    <Content Include="html\favicon.ico" />
-    <Content Include="html\htmlpage.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,7 +37,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RepairRequestDB\RepairRequestDB.csproj" />
-    <ProjectReference Include="..\RepeirRequestBL\RepairRequestBL.csproj" />
   </ItemGroup>
 
 </Project>

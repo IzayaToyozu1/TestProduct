@@ -13,11 +13,10 @@ namespace RepairRequestWEB.Configure
         public static void ConfigureRoutes(WebApplication routes)
         {
             _connect = routes.Configuration.GetConnectionString("DefaultConnection");
+            
             routes.MapHub<ChatHub>("/Chat");
 
-            ConfigureCustomRoute(routes, "/KekaChat", "html/chatpage.html");
-            ConfigureCustomRoute(routes, "/htmlpage", "html/htmlpage1.html");
-            ConfigureCustomRoute(routes, "/htmltest", "html/test.html");
+            ConfigureCustomRoute(routes, "/RepairRequest", "html/repairRequest.html");
 
             ConfigureApiRoutes(routes);
         }
@@ -55,13 +54,15 @@ namespace RepairRequestWEB.Configure
 
             routes.MapGet("/api/GetMessChatRequest", (int idRequest) =>
             {
-                var context = new DBContext(_connect);
-                var paramProc = new DbParametrProc(
-                    new[] { "@id" },
-                    new object[] { idRequest });
-                var requestMessChat = context.ProcGetData<RequestMessage>(paramProc);
-                context.Dispose();
-                return Results.Json(requestMessChat);
+                RequestMessage[] result;
+                using (var context = new DBContext(_connect))
+                {
+                    var paramProc = new DbParametrProc(
+                        new[] { "@id" },
+                        new object[] { idRequest });
+                    result = context.ProcGetData<RequestMessage>(paramProc);
+                }
+                return Results.Json(result);
             });
 
             routes.MapGet("/api/GetCommentRequest", (int idRequestRepair) =>
@@ -76,17 +77,18 @@ namespace RepairRequestWEB.Configure
                 return Results.Json(requestComments);
             });
 
-            routes.MapGet("/api/SetCommentRequest", (int idRequest, string comment, int idUser) =>
+            routes.MapPost("/api/SetCommentRequest", (int idRequest, string comment) =>
             {
+                int idUser = 0;
                 var context = new DBContext(_connect);
                 var paramProc = new DbParametrProc(
                     new string[3] { "@id_RequestRepair", "@Comment", "@id_user" },
                     new object[] { idRequest, comment, idUser });
-                context.ProcGetData<RequestComment>(paramProc);
+                context.ProcSetData<RequestComment>(paramProc);
                 context.Dispose();
             });
 
-            routes.MapGet("/api/SetComment", (int id, bool type, string comment, int idWriter) =>
+            routes.MapPost("/api/SetComment", (int id, bool type, string comment, int idWriter) =>
             {
                 var context = new DBContext(_connect);
                 var paramProc = new DbParametrProc(
