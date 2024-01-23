@@ -1,10 +1,25 @@
 ﻿
 var idRequest = 0;
+var FIOUser = "";
+var dataCommentRequestJson;
 
 var headerBox = document.getElementsByClassName("headerChat");
 var btSender = document.getElementById("btSender");
 
-btSender.addEventListener("click", function () {
+
+function SetCommentToform() {
+    var messagePanel = document.getElementsByClassName("messagePanel");
+
+    for (var comment of dataCommentRequestJson) {
+        var def = "message-right";
+        if (comment.FIO == FioUser)
+            def = "message - left"
+        messagePanel.innerHTML = "<div class=\"messageBox " + def + "\">" +
+            "< div class=\"message\"> " + comment.Comment + "</div >" +
+            "<div class=\"messageInfo\">" + comment.FIO + " " + comment.DateCreate + "</div></div > ";
+    } 
+
+btSender.addEventListener("click", async function () {
     var url = "/api/SetCommentRequest";
 
     var requestData = {
@@ -35,8 +50,37 @@ btSender.addEventListener("click", function () {
         });
 });
 
-geaderBox.addEventListener("click", function () {
-    var url = "api"
-})
+headerBox.addEventListener("click", async function () {
+    var url = "/api/GetCommentRequest";
 
+    var requestData = {
+        idRequestRepair: idRequest
+    };
 
+    // Добавление параметров запроса к URL
+    var params = new URLSearchParams(requestData);
+    url = url + '?' + params.toString();
+
+    // Опции запроса
+    var requestOptions = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    try {
+        var response = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        dataCommentRequestJson = await response.json().parse();
+
+        SetCommentToform();
+        console.log(data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});

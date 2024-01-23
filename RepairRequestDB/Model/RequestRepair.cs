@@ -2,7 +2,8 @@
 
 namespace RepairRequestDB.Model
 {
-    [Table("j_RequestRepair", Schema = "Repair")]
+    [NameProc("", "")]
+    [NameScheme("")]
     public class RequestRepair
     {
         public int Id { get; set; }

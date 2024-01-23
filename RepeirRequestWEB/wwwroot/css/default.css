@@ -73,17 +73,48 @@ textarea:focus {
 }
 
 .messagePanel {
-    display: block;
+    display: flex;
+    flex-direction: column;
     height: calc(100% - 50px - 10px);
     margin: 5px;
     caret-color: transparent;
+}
+
+.messageBox {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    border-color: #495890;
+    background-color: #495890;
+    max-width: 350px;
+    min-width: 60px;
+}
+
+.message-right {
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message-left {
+    align-self: flex-start;
+    text-align: left;
+}
+
+.message{
+         
+}
+
+.messageInfo{
+    height: 8px;
+    font-size: 10px;
 }
 
 .messageSenderPanel {
     display: flex;
     flex-wrap: wrap;
     height: 50px;
-    background-color: #313649;
+    background-color: #495890;
     margin: 5px;
 }
 
@@ -97,8 +128,8 @@ textarea:focus {
     box-sizing: border-box;
     background-color: transparent;
     color: white;
-    resize: vertical; /* –азрешение на изменение высоты (вертикальное) */
-    height: auto; /* јвтоматическое определение высоты */
+    resize: vertical;
+    height: auto;
     white-space: pre-wrap;
     overflow: hidden;
     resize: none;
@@ -109,9 +140,6 @@ button.sender{
 }
 
 .contentChatBox {
-    /*
-    min-height: 80px;
-    max-height: 300px;*/
     height: 100px;
     padding: 5px;
     box-sizing: border-box;
