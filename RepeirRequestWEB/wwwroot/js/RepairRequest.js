@@ -2,10 +2,29 @@
 var idRequest = 0;
 var FIOUser = "";
 var dataCommentRequestJson;
+var dataRequest;
 
 var headerBox = document.getElementsByClassName("headerChat");
 var btSender = document.getElementById("btSender");
 
+document.addEventListener("DOMContentLoaded", function () {
+
+    fetch("api/GetRequest")
+        .then(response => response.json())
+        .(data => {
+
+            dataRequest = data;
+        })
+        .catch(error => {
+            console.error('Ошибка:', error)
+        });
+});
+
+function GetDataRequest() {
+   
+}
+
+function 
 
 function SetCommentToform() {
     var messagePanel = document.getElementsByClassName("messagePanel");

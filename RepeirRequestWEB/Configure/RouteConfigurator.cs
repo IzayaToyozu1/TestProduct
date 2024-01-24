@@ -40,7 +40,7 @@ namespace RepairRequestWEB.Configure
 
         private static void ConfigureApiRoutes(IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/api/GetRequestAll", (string start, string end,
+            routes.MapGet("/api/GetRequest", (string start, string end,
                 int typeService, bool withAccess) =>
             {
                 var context = new DBContext(_connect);
