@@ -24,7 +24,6 @@ function GetDataRequest() {
    
 }
 
-function 
 
 function SetCommentToform() {
     var messagePanel = document.getElementsByClassName("messagePanel");
