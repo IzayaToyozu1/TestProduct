@@ -1,0 +1,7 @@
+# robots.txt file
+# see robotstxt.org for more details
+
+User-agent: *
+Disallow: /images/index.html
+Disallow: /javascript
+Disallow: /style
