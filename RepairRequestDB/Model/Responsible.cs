@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WorkerSQL;
 
 namespace RepairRequestDB.Model
 {
-    [NameProc("getAllResponsible", "insertOrUpdateResponsible")]
-    [NameScheme("Repair")]
+    [NameProc("getAllResponsible", "insertOrUpdateResponsible", "")]
     public class Responsible
     {
         [NameFieldDB("id")] public int Id { get; set; }

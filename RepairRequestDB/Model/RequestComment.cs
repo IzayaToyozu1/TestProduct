@@ -1,9 +1,8 @@
-﻿using RepairRequestDB;
+﻿using WorkerSQL;
 
 namespace RepairRequestDB.Model
 {
-    [NameProc("GetCommentsById", "SetComment")]
-    [NameScheme("Repair")]
+    [NameProc("GetCommentsById", "SetComment", "Repair")]
     public class RequestComment
     {
         public DateTime DateCreate { get; set; }

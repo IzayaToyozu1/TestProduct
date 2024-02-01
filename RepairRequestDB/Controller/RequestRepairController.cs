@@ -1,9 +1,6 @@
-﻿using RepairRequestDB.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+using RepairRequestDB.Model;
+using WorkerSQL;
 
 namespace RepairRequestDB.Controller
 {
@@ -13,6 +10,9 @@ namespace RepairRequestDB.Controller
         private RequestRepair[] _requestsRepairIsNotBegin;
         private DBContext _dbContext;
 
+        public event EventHandler UpdateRequestsRepair;
+        public event EventHandler EditRequestsRepair;
+
         public RequestRepairController(DBContext context)
         {
             _requestsRepairIsBegin = new RequestRepair[0];
@@ -20,6 +20,23 @@ namespace RepairRequestDB.Controller
             _dbContext = context;
             var requstsRepair = context.ProcGetData<RequestRepair>();
             SplitRequestAsync(requstsRepair);
+        }
+
+        public RequestRepair[] GetRequestsRepairIsBegin()
+        {
+            return CopyDataArray(_requestsRepairIsBegin);
+        }
+
+        public RequestRepair[] GetRequestRepairIsNotBegin()
+        {
+            return CopyDataArray(_requestsRepairIsNotBegin);
+        }
+
+        private RequestRepair[] CopyDataArray(RequestRepair[] dataCopy)
+        {
+            RequestRepair[] result = new RequestRepair[0];
+            result.CopyTo(dataCopy, 0);
+            return result;
         }
 
         private void SplitRequest(RequestRepair[] requestsRepair)

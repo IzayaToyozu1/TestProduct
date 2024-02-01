@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using WorkerSQL;
 
 namespace RepairRequestDB.Model
 {
-    [Table("ListUsers", Schema = "dbo")]
+    [NameProc("", "", "")]
     public class User
     {
         public int id { get; set; }

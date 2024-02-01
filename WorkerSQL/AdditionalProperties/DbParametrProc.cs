@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace RepairRequestDB.AdditionalProperties
+namespace WorkerSQL.AdditionalProperties
 {
     public class DbParametrProc
     {

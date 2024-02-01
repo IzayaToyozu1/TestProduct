@@ -1,7 +1,8 @@
-﻿namespace RepairRequestDB.Model
+﻿using WorkerSQL;
+
+namespace RepairRequestDB.Model
 {
-    [NameScheme("Repair")]
-    [NameProc("", "")]
+    [NameProc("", "", "")]
     public class RequestChat
     {
         public int Id { get; set; }

@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Reflection;
 
-namespace RepairRequestDB.AdditionalProperties
+namespace WorkerSQL.AdditionalProperties
 {
     partial class ConvertTypeToDbType
     {
@@ -12,9 +12,7 @@ namespace RepairRequestDB.AdditionalProperties
                 myClassType.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             List<DbType> listDbType = new List<DbType>();
             foreach (FieldInfo field in fields)
-            {
                 listDbType.Add(ToDbType(field.FieldType));
-            }
             return listDbType.ToArray();
         }
 

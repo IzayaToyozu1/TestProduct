@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Data;
+using System.Reflection;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
 using Microsoft.Data.SqlClient;
-using RepairRequestDB.AdditionalProperties;
+using WorkerSQL.AdditionalProperties;
 
-namespace RepairRequestDB
+namespace WorkerSQL
 {
-    public class DBContext: IDisposable
+    public class DBContext : IDisposable
     {
         private readonly SqlConnection _sqlConnection;
 
@@ -23,7 +23,7 @@ namespace RepairRequestDB
             _sqlConnection.Open();
         }
 
-        public T[] ProcGetData<T>(DbParametrProc paramProc = null)where T: class
+        public T[] ProcGetData<T>(DbParametrProc paramProc = null) where T : class
         {
             string nameProc;
             string nameScheme;
@@ -47,10 +47,10 @@ namespace RepairRequestDB
                     {
                         NameFieldDBAttribute attribute = (NameFieldDBAttribute)attr
                             .FirstOrDefault(row => row.GetType() == typeof(NameFieldDBAttribute));
-                        if(attribute == null)
+                        if (attribute == null)
                             continue;
                         value = attribute.Name;
-                         propItem.SetValue(obj, value);
+                        propItem.SetValue(obj, value);
                     }
                     else
                     {
@@ -99,9 +99,9 @@ namespace RepairRequestDB
 
         private string GetNameScheme(Type type)
         {
-            NameSchemeAttribute nameSchemeAttribute = (NameSchemeAttribute)GetAttributesClass(type)
-                .FirstOrDefault(item => item.GetType() == typeof(NameSchemeAttribute));
-            return nameSchemeAttribute == null ? $"dbo" : nameSchemeAttribute.Name;
+            NameProcAttribute nameSchemeAttribute = (NameProcAttribute)GetAttributesClass(type)
+                .FirstOrDefault(item => item.GetType() == typeof(NameProcAttribute));
+            return nameSchemeAttribute == null || nameSchemeAttribute.SchemeProcedure.Length == 0 ? $"dbo" : nameSchemeAttribute.SchemeProcedure;
         }
 
         private SqlDataReader ExecuteProcedure(string nameScheme, string nameProc, DbParametrProc paramProc = null)
@@ -137,7 +137,7 @@ namespace RepairRequestDB
             {
                 attributes.Add(attr);
             }
-            
+
             return attributes.ToArray();
         }
     }

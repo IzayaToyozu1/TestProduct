@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RepairRequestDB\RepairRequestDB.csproj" />
+    <ProjectReference Include="..\WorkerSQL\WorkerSQL.csproj" />
   </ItemGroup>
 
 </Project>

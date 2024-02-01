@@ -1,4 +1,6 @@
-﻿namespace RepairRequestDB.Model
+﻿using WorkerSQL;
+
+namespace RepairRequestDB.Model
 {
     public class RequestMessage
     {
