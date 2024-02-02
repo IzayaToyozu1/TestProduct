@@ -11,18 +11,17 @@ namespace RepairRequestDB.UpdateDataRequests
     public class UpdateDataRequest
     {
         private readonly DBContext _context;
+        private readonly RequestRepairController _controller;
 
         public UpdateDataRequest(DBContext context, RequestRepairController requestController)
         {
             _context = context;
+            _controller = requestController;
         }
 
-        public bool CompareArray<T>(ref T[] array1, T[] array2) where T : class
+        public void CheckDataRequestsRepair()
         {
-            if (array1.Equals(array2))
-                return true;
-            else
-                return false;
+            _controller.
         }
     }
 }
