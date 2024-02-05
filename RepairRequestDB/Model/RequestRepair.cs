@@ -51,7 +51,5 @@ namespace RepairRequestDB.Model
         public string? StageName { get; set; }
         public int IdPriority { get; set; }
         public string? PriorityName { get; set; }
-
-        public 
     }
 }

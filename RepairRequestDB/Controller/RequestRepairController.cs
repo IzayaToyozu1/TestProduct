@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel;
+using System.Data;
 using RepairRequestDB.Model;
 using WorkerSQL;
 
@@ -29,31 +30,61 @@ namespace RepairRequestDB.Controller
             return CopyDataArray(_requestsRepairIsBegin);
         }
 
+        
         public RequestRepair[] GetRequestRepairIsNotBegin()
         {
             return CopyDataArray(_requestsRepairIsNotBegin);
         }
-
-        public void CheckRequestsRepair()
+        
+        private RequestRepair[] CheckDataRequests(RequestRepair[] requests)
         {
+            List<RequestRepair> requestsList = new List<RequestRepair>();
+            var result = _dbContext.ProcGetData<RequestRepair>();
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                var req = _requestsRepairIsNotBegin.FirstOrDefault(r => r.Id == result[i].Id);
+                bool reqIsDone = req == null && result[i].Status == _statusRequestDone.Id;
+                bool reqIsEquals = req.Equals(result[i]);
+                if (reqIsDone || reqIsEquals) 
+                    continue;
+                
+                requestsList.Add(req);
+            }
             
+            return requestsList.ToArray();
         }
 
-        private void CheckDataRequests(RequestRepair[] requests)
+        private async void UpdateDataAsync(RequestRepair[] editorData)
         {
-            var result = _dbContext.ProcGetData<RequestRepair>();
-            result = SplitExceptRequestRepairs(result, _statusRequestDone);
-
-            if (result.Equals(_requestsRepairIsBegin))
-                return;
-
-            for (int i = 0; i < requests.Length; i++)
+            Task.Run(() =>
             {
-                var request = _requestsRepairIsBegin.FirstOrDefault(req => req.Id == requests[i].Id);
-                if(request == null)
-                    continue;
-                request.Equals(requests[i]);
-            }
+                for (int i = 0; i < editorData.Length; i++)
+                {
+                    if (editorData[i].Status == _statusRequestDone.Id)
+                    {
+                        var request = _requestsRepairIsNotBegin.FirstOrDefault(r => editorData[i].Id == r.Id);
+                        RequestDelete(_requestsRepairIsNotBegin, request);
+                        RequestInsert(_requestsRepairIsBegin, request);
+                    }
+                    else
+                    {
+
+                    }
+                }
+            });
+        }
+
+        private void RequestDelete(RequestRepair[] editorData, RequestRepair repair)
+        {
+            var data = new RequestRepair[editorData.Length];
+            data = editorData.Where(r => r.Id != repair.Id).ToArray();
+            editorData = data;
+        }
+
+        private void RequestInsert(RequestRepair[] editorData, RequestRepair repair)
+        {
+
         }
 
         private RequestRepair[] CopyDataArray(RequestRepair[] dataCopy)
